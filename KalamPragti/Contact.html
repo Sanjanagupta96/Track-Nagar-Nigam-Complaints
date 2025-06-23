@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us - Nagar Nigam Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(90deg, #12067b, #720a53);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    header h1 {
+      margin-bottom: 5px;
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-section h2 {
+      text-align: center;
+      color: #0077b6;
+      margin-bottom: 30px;
+    }
+
+    .contact-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .contact-form {
+      flex: 1 1 60%;
+    }
+
+    .contact-form form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    .contact-form form input,
+    .contact-form form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .contact-form form textarea {
+      resize: vertical;
+    }
+
+    .contact-form form button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background-color: #0077b6;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-form form button:hover {
+      background-color: #023e8a;
+    }
+
+    .contact-info {
+      flex: 1 1 35%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .info-card {
+      padding: 20px;
+      border-radius: 10px;
+      background: #e0f7fa;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-card h4 {
+      margin-bottom: 8px;
+      color: #0077b6;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #03045e;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      margin-top: 80px;
+    }
+
+    @media (max-width: 768px) {
+      .contact-grid {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1 id="title">Nagar Nigam Complaint Tracker</h1>
+    <nav>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="Complain.html" id="complainLink">Register Complaint</a>
+      <a href="Trackcomplain.html" id="trackLink">Track Status</a>
+      <a href="Contact.html" id="contactLink">Contact</a>
+    </nav>
+    <div class="language-switcher">
+      <button data-lang="en">English</button>
+      <button data-lang="hi">हिन्दी</button>
+    </div>
+  </header>
+
+  <!-- Contact Section -->
+  <section class="contact-section" data-aos="fade-up">
+    <h2 id="contact">Contact Us</h2>
+    <div class="contact-grid">
+      
+      <!-- Contact Form -->
+      <div class="contact-form">
+        <form id="contactForm">
+          <label for="name" id="name2Label">Your Name:</label>
+          <input type="text" name="name" id="name" required placeholder="" />
+
+          <label for="email" id="mailLabel">Email Address:</label>
+          <input type="email" name="email" id="email" required placeholder="" />
+
+          <label for="subject" id="subjectLabel">Subject:</label>
+          <input type="text" name="subject" id="subject" required placeholder="" />
+
+          <label for="message" id="messageLabel">Message:</label>
+          <textarea name="message" id="message" rows="5" required placeholder=""></textarea>
+
+          <button type="submit" id="send_message">Send Message</button>
+        </form>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <div class="info-card" data-aos="zoom-in">
+          <h4 id="phone">📞 Phone</h4>
+          <p id="phoneNum">+91-12345-67890</p>
+        </div>
+        <div class="info-card" data-aos="zoom-in" data-aos-delay="100">
+          <h4 id="mail1">📧 Email</h4>
+          <p id="support">support@nigamtrack.in</p>
+        </div>
+        <div class="info-card" data-aos="zoom-in" data-aos-delay="200">
+          <h4 id="address1">📍 Office Address</h4>
+          <p id="addr">Nagar Nigam Office, Main Road, YourCity - 000000</p>
+        </div>
+      </div>
+    </div>
+    <div id="contactSuccess"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span id="foo">&copy; 2025 Nagar Nigam Complaint Tracker. All rights reserved. | Developed by Tech Challengers</span>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 1000 });</script>
+  <script>
+  document.getElementById('contactForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const contactData = {
+      name: form.name.value,
+      email: form.email.value,
+      subject: form.subject.value,
+      message: form.message.value
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/api/contact-messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contactData)
+      });
+
+      if (response.ok) {
+        document.getElementById('contactSuccess').innerHTML = "✅ Your message has been sent!";
+        form.reset();
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      document.getElementById('contactSuccess').innerHTML = "❌ There was an error. Please try again.";
+    }
+  });
+  </script>
+  <script>
+    const translations = {
+      en: {
+        title: "Nagar Nigam Complaint Tracker",
+        homeLink: "Home",
+        complainLink: "Register Complaint",
+        trackLink: "Track Status",
+        contactLink: "Contact",
+        contact: "Contact Us",
+        name2Label: "Your Name:",
+        mailLabel: "Email Address:",
+        subjectLabel: "Subject:",
+        messageLabel: "Message:",
+        send_message: "Send Message",
+        phone: "📞 Phone",
+        phoneNum: "+91-12345-67890",
+        mail1: "📧 Email",
+        support: "support@nigamtrack.in",
+        address1: "📍 Office Address",
+        addr: "Nagar Nigam Office, Main Road, YourCity - 000000",
+        foo: "©2025 Nagar Nigam Complaint Tracker. All rights reserved. | Developed by Tech Challengers"
+      },
+      hi: {
+        title: "नगर निगम शिकायत ट्रैकर",
+        homeLink: "होम",
+        complainLink: "शिकायत दर्ज करें",
+        trackLink: "स्थिति ट्रैक करें",
+        contactLink: "संपर्क करें",
+        contact: "संपर्क करें",
+        name2Label: "आपका नाम:",
+        mailLabel: "ईमेल पता:",
+        subjectLabel: "विषय:",
+        messageLabel: "संदेश:",
+        send_message: "संदेश भेजें",
+        phone: "📞 फ़ोन",
+        phoneNum: "+91-12345-67890",
+        mail1: "📧 ईमेल",
+        support: "support@nigamtrack.in",
+        address1: "📍 कार्यालय पता",
+        addr: "नगर निगम कार्यालय, मुख्य सड़क, आपका शहर - 000000",
+        foo: "©2025 नगर निगम शिकायत ट्रैकर। सर्वाधिकार सुरक्षित। | विकसित किया गया टेक चैलेंजर्स द्वारा।"
+      }
+    };
+
+    function setLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      const t = translations[lang];
+      if (!t) return;
+      for (const id in t) {
+        const el = document.getElementById(id);
+        if (el) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.placeholder = '';
+          } else {
+            el.innerText = t[id];
+          }
+        }
+      }
+    }
+
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setLanguage(btn.dataset.lang);
+      });
+    });
+
+    const defaultLang = localStorage.getItem('lang') || 'en';
+    setLanguage(defaultLang);
+  </script>
+</body>
+</html>

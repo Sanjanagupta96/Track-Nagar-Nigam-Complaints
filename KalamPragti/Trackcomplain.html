@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Track Complaint - Nagar Nigam Complaint Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(90deg, #041670, #55034f);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+    header h1 {
+      margin-bottom: 5px;
+    }
+    nav {
+      margin-top: 10px;
+    }
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .intro {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .intro h2 {
+      color: #0077b6;
+      margin-bottom: 10px;
+    }
+    .intro p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .track-section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: rgb(89, 46, 232);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      color: white;
+    }
+
+    .track-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .track-header h2 {
+      color: #ffffff;
+    }
+
+    .complaint-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .complaint-info p {
+      font-size: 1.1rem;
+    }
+
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 40px 0;
+      padding: 0 50px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 50px;
+      right: 50px;
+      height: 4px;
+      background: #ccc;
+      z-index: 0;
+    }
+
+    /* Animated progress line */
+    .timeline::after {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 50px;
+      height: 4px;
+      background: #250000df;
+      z-index: 1;
+      animation: progressAnim 2s ease-out forwards;
+    }
+
+    @keyframes progressAnim {
+      from {
+        width: 0;
+      }
+      to {
+        width: calc((100% - 100px) * 0.6); /* 3 steps completed = 60% */
+      }
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+    .step .circle {
+      width: 50px;
+      height: 50px;
+      background: #6576f5;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      line-height: 50px;
+      color: rgb(255, 255, 255);
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .step.completed .circle {
+      background: #120505;
+    }
+    .step.active .circle {
+      background: #ebeff2;
+      color: #000;
+    }
+    .step p {
+      font-size: 0.95rem;
+    }
+
+    .cards-container {
+      max-width: 1000px;
+      margin: 60px auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 20px;
+    }
+    .card {
+      flex: 1 1 300px;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+    }
+    .card h3 {
+      color: #0077b6;
+      margin-bottom: 10px;
+    }
+    .card p {
+      color: #555;
+    }
+
+    footer {
+      background-color: #03045e;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      margin-top: 80px;
+    }
+
+    @media (max-width: 768px) {
+      .timeline {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+      }
+      .timeline::before,
+      .timeline::after {
+        display: none;
+      }
+      .step {
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1 id="title">Nagar Nigam Complaint Tracker</h1>
+    <nav>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="Complain.html" id="complainLink">Register Complaint</a>
+      <a href="Trackcomplain.html" id="trackLink">Track Status</a>
+      <a href="Contact.html" id="contactLink">Contact</a>
+    </nav>
+    <div class="language-switcher">
+      <button data-lang="en">English</button>
+      <button data-lang="hi">हिन्दी</button>
+    </div>
+  </header>
+
+  <!-- Intro Section -->
+  <section class="intro" data-aos="fade-up">
+    <h2 id="track">Track Your Complaints with Ease</h2>
+    <p id="comp_no">No more standing in long queues or repeated visits to Nagar Nigam offices. Just enter your complaint number and track its status live. Empowering citizens with transparency and real-time updates.</p>
+  </section>
+
+  <!-- Track Complaint Section -->
+  <div class="track-section" data-aos="zoom-in">
+    <div class="track-header">
+      <h2 id="progress">Complaint Progress</h2>
+      <form id="trackForm" style="margin: 20px 0; text-align: center;">
+        <input type="text" id="complaintNumber" placeholder="Enter Complaint Number" required style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; width: 250px; margin-right: 10px;" />
+        <button type="submit" id="trackBtn" style="padding: 10px 20px; border-radius: 6px; border: none; background: #0077b6; color: white; font-weight: 500; cursor: pointer;">Track</button>
+      </form>
+    </div>
+    <div id="trackResult" style="display:none;"></div>
+    <div id="timelineContainer" style="display:none;"></div>
+  </div>
+
+  <!-- Information Cards -->
+  <section class="cards-container" data-aos="fade-up">
+    <div class="card">
+      <h3 id="comp_guide">Complaint Guidelines</h3>
+      <p id="description1">Ensure your complaint includes a clear description, photo (if applicable), and accurate location to enable faster verification and resolution.</p>
+    </div>
+    <div class="card">
+      <h3 id="supp_help">Support & Helpline</h3>
+      <p id="deployed">If your complaint is delayed or misrouted, call our 24/7 support number: <strong>1800-123-4567</strong> or email us at help@nagarcomplaints.gov.in.</p>
+    </div>
+    <div class="card">
+      <h3 id="policy">Citizen Grievance Policy</h3>
+      <p id="resolved_comp">We are committed to resolving every complaint within 7 working days. Your feedback helps us improve the city's services and response quality.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span id="foo">&copy; 2025 Nagar Nigam Complaint Tracker. All rights reserved. | Developed by Tech Challengers</span>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000 });
+
+    // Helper to get timeline steps based on status
+    function getTimelineSteps(status) {
+      const lang = localStorage.getItem('lang') || 'en';
+      const steps = [
+        { label: translations[lang].submit1, key: 'PENDING' },
+        { label: translations[lang].verified, key: 'VERIFIED' },
+        { label: translations[lang].assign, key: 'ASSIGNED' },
+        { label: translations[lang].progress1, key: 'IN_PROGRESS' },
+        { label: translations[lang].resolve, key: 'RESOLVED' }
+      ];
+      let activeIndex = steps.findIndex(step => step.key === status);
+      if (activeIndex === -1) activeIndex = 0;
+      return steps.map((step, idx) => {
+        let stepClass = '';
+        if (idx < activeIndex) stepClass = 'completed';
+        else if (idx === activeIndex) stepClass = 'active';
+        return `<div class="step ${stepClass}"><div class="circle">${idx+1}</div><p>${step.label}</p></div>`;
+      }).join('');
+    }
+
+    // Store last complaint for re-rendering on language change
+    let lastComplaint = null;
+    let lastError = false;
+
+    function renderComplaintDetails(complaint) {
+      const lang = localStorage.getItem('lang') || 'en';
+      return `
+        <h3>${translations[lang].details || 'Complaint Details'}</h3>
+        <p><strong>${translations[lang].comp_no1 || 'Complaint Number:'}</strong> ${complaint.complaintNumber}</p>
+        <p><strong>${translations[lang].name1 || 'Name:'}</strong> ${complaint.fullName}</p>
+        <p><strong>${translations[lang].issue1 || 'Issue Type:'}</strong> ${complaint.issueType}</p>
+        <p><strong>${translations[lang].description2 || 'Description:'}</strong> ${complaint.description}</p>
+        <p><strong>${translations[lang].status1 || 'Status:'}</strong> <span style="color: ${complaint.status === 'RESOLVED' ? 'green' : complaint.status === 'IN_PROGRESS' ? 'orange' : 'red'}">${translations[lang][complaint.status.toLowerCase()] || complaint.status}</span></p>
+        <p><strong>${translations[lang].date || 'Submission Date:'}</strong> ${complaint.submissionDate ? new Date(complaint.submissionDate).toLocaleDateString() : ''}</p>
+      `;
+    }
+
+    document.getElementById('trackForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const complaintNumber = document.getElementById('complaintNumber').value.trim();
+      const resultDiv = document.getElementById('trackResult');
+      const timelineDiv = document.getElementById('timelineContainer');
+      resultDiv.style.display = 'none';
+      timelineDiv.style.display = 'none';
+      resultDiv.innerHTML = '';
+      timelineDiv.innerHTML = '';
+      if (!complaintNumber) {
+        alert('Please enter a complaint number');
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:8080/api/complaints/track/${complaintNumber}`);
+        if (response.ok) {
+          const complaint = await response.json();
+          lastComplaint = complaint;
+          lastError = false;
+          resultDiv.style.display = 'block';
+          resultDiv.innerHTML = renderComplaintDetails(complaint);
+          // Show dynamic timeline
+          timelineDiv.style.display = 'flex';
+          timelineDiv.className = 'timeline';
+          timelineDiv.innerHTML = getTimelineSteps(complaint.status);
+        } else {
+          throw new Error('Complaint not found');
+        }
+      } catch (error) {
+        lastComplaint = null;
+        lastError = true;
+        resultDiv.style.display = 'block';
+        const lang = localStorage.getItem('lang') || 'en';
+        resultDiv.innerHTML = `<p style="color: red;">${translations[lang].not_found || 'Complaint not found. Please check the complaint number.'}</p>`;
+        timelineDiv.style.display = 'none';
+      }
+    });
+
+    // Re-render complaint details on language change
+    function rerenderTrackResult() {
+      const resultDiv = document.getElementById('trackResult');
+      const timelineDiv = document.getElementById('timelineContainer');
+      if (lastComplaint) {
+        resultDiv.innerHTML = renderComplaintDetails(lastComplaint);
+        timelineDiv.innerHTML = getTimelineSteps(lastComplaint.status);
+      } else if (lastError && resultDiv.style.display === 'block') {
+        const lang = localStorage.getItem('lang') || 'en';
+        resultDiv.innerHTML = `<p style="color: red;">${translations[lang].not_found || 'Complaint not found. Please check the complaint number.'}</p>`;
+      }
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      const t = translations[lang];
+      if (!t) return;
+      for (const id in t) {
+        const el = document.getElementById(id);
+        if (el) {
+          if (id === 'deployed') {
+            el.innerHTML = t[id];
+          } else {
+            el.innerText = t[id];
+          }
+        }
+      }
+      rerenderTrackResult();
+    }
+
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setLanguage(btn.dataset.lang);
+      });
+    });
+
+    const defaultLang = localStorage.getItem('lang') || 'en';
+    setLanguage(defaultLang);
+  </script>
+
+  <script>
+    const translations = {
+      en: {
+        title: "Nagar Nigam Complaint Tracker",
+        homeLink: "Home",
+        complainLink: "Register Complaint",
+        trackLink: "Track Status",
+        contactLink: "Contact",
+        track: "Track Your Complaints with Ease",
+        comp_no: "No more standing in long queues or repeated visits to Nagar Nigam offices. Just enter your complaint number and track its status live. Empowering citizens with transparency and real-time updates.",
+        progress: "Complaint Progress",
+        trackBtn: "Track",
+        comp_guide: "Complaint Guidelines",
+        description1: "Ensure your complaint includes a clear description, photo (if applicable), and accurate location to enable faster verification and resolution.",
+        supp_help: "Support & Helpline",
+        deployed: "If your complaint is delayed or misrouted, call our 24/7 support number: <strong>1800-123-4567</strong> or email us at help@nagarcomplaints.gov.in.",
+        policy: "Citizen Grievance Policy",
+        resolved_comp: "We are committed to resolving every complaint within 7 working days. Your feedback helps us improve the city's services and response quality.",
+        submit1: "Submitted",
+        verified: "Verified",
+        assign: "Assigned",
+        progress1: "In Progress",
+        resolve: "Resolved",
+        foo: "©2025 Nagar Nigam Complaint Tracker. All rights reserved. | Developed by Tech Challengers",
+        details: "Complaint Details",
+        comp_no1: "Complaint Number:",
+        name1: "Name:",
+        issue1: "Issue Type:",
+        description2: "Description:",
+        status1: "Status:",
+        not_found: "Complaint not found. Please check the complaint number."
+      },
+      hi: {
+        title: "नगर निगम शिकायत ट्रैकर",
+        homeLink: "होम",
+        complainLink: "शिकायत दर्ज करें",
+        trackLink: "स्थिति ट्रैक करें",
+        contactLink: "संपर्क करें",
+        track: "अपनी शिकायतें आसानी से ट्रैक करें",
+        comp_no: "अब नगर निगम कार्यालयों की लंबी कतारों में खड़े होने या बार-बार जाने की ज़रूरत नहीं। बस अपनी शिकायत संख्या दर्ज करें और उसकी स्थिति लाइव ट्रैक करें। नागरिकों को पारदर्शिता और रीयल-टाइम अपडेट से सशक्त बनाना।",
+        progress: "शिकायत की प्रगति",
+        trackBtn: "ट्रैक करें",
+        comp_guide: "शिकायत दिशानिर्देश",
+        description1: "अपनी शिकायत में स्पष्ट विवरण, फ़ोटो (यदि लागू हो), और सटीक स्थान शामिल करें ताकि तेजी से सत्यापन और समाधान किया जा सके।",
+        supp_help: "सहायता और हेल्पलाइन",
+        deployed: "यदि आपकी शिकायत में देरी हो रही है या गलत विभाग को भेजी गई है, तो हमारे 24x7 सपोर्ट नंबर 1800-123-4567 पर कॉल करें या help@nagarcomplaints.gov.in पर ईमेल करें।",
+        policy: "नागरिक शिकायत नीति",
+        resolved_comp: "हम हर शिकायत को 7 कार्य दिवसों के भीतर हल करने के लिए प्रतिबद्ध हैं। आपकी प्रतिक्रिया हमें शहर की सेवाओं और प्रतिक्रिया गुणवत्ता में सुधार करने में मदद करती है।",
+        submit1: "सबमिट की गई",
+        verified: "सत्यापित",
+        assign: "आवंटित",
+        progress1: "प्रगति में",
+        resolve: "सुलझा ली गई",
+        foo: "©2025 नगर निगम शिकायत ट्रैकर। सर्वाधिकार सुरक्षित। | विकसित किया गया टेक चैलेंजर्स द्वारा।",
+        details: "शिकायत विवरण",
+        comp_no1: "शिकायत संख्या:",
+        name1: "नाम:",
+        issue1: "समस्या:",
+        description2: "विवरण:",
+        status1: "स्थिति:",
+        not_found: "शिकायत नहीं मिली। कृपया शिकायत संख्या जांचें।"
+      }
+    };
+  </script>
+
+</body>
+</html>

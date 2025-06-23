@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Complaint Portal</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background: #f0f0f0; }
+    select, button, input { padding: 4px 8px; }
+    img { max-width: 60px; max-height: 60px; }
+    .edit-row input, .edit-row select { width: 90%; }
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 40px 0;
+      padding: 0 50px;
+    }
+    .timeline .progress-bar {
+      position: absolute;
+      top: 25px;
+      left: 50px;
+      height: 4px;
+      background: #250000df;
+      z-index: 1;
+      transition: width 0.5s;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 50px;
+      right: 50px;
+      height: 4px;
+      background: #ccc;
+      z-index: 0;
+    }
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 40px 0 0 0;
+      padding: 0 20px;
+    }
+    .stepper-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+    }
+    .stepper-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      color: #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .stepper-step.completed .stepper-circle {
+      background: #4caf50;
+      color: #fff;
+    }
+    .stepper-step.active .stepper-circle {
+      background: #2196f3;
+      color: #fff;
+      border: 2px solid #1976d2;
+    }
+    .stepper-label {
+      font-size: 0.95rem;
+      color: #333;
+    }
+    .stepper-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      right: -50%;
+      width: 100%;
+      height: 4px;
+      background: #e0e0e0;
+      z-index: 0;
+    }
+    .stepper-step.completed:not(:last-child)::after {
+      background: #4caf50;
+    }
+    @media (max-width: 600px) {
+      .stepper {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .stepper-step:not(:last-child)::after {
+        width: 4px;
+        height: 40px;
+        top: 40px;
+        left: 18px;
+        right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Complaint Portal</h1>
+  <table id="complaintsTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Complaint Number</th>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Address</th>
+        <th>Issue</th>
+        <th>Description</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Image</th>
+        <th>Submission Date</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="timelineContainer" style="display:none;"></div>
+
+  <h2>Contact Messages</h2>
+  <table id="contactsTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Subject</th>
+        <th>Message</th>
+        <th>Date</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let editingId = null;
+    async function fetchComplaints() {
+      const res = await fetch('http://localhost:8080/api/complaints');
+      const data = await res.json();
+      const tbody = document.querySelector('#complaintsTable tbody');
+      tbody.innerHTML = '';
+      data.forEach(c => {
+        if (editingId === c.id) {
+          tbody.innerHTML += `
+            <tr class="edit-row">
+              <td>${c.id}</td>
+              <td>${c.complaintNumber}</td>
+              <td><input value="${c.fullName}" id="edit-name-${c.id}"></td>
+              <td><input value="${c.mobileNumber}" id="edit-mobile-${c.id}"></td>
+              <td><input value="${c.address}" id="edit-address-${c.id}"></td>
+              <td><input value="${c.issueType}" id="edit-issue-${c.id}"></td>
+              <td><input value="${c.description}" id="edit-desc-${c.id}"></td>
+              <td><input value="${c.location}" id="edit-location-${c.id}"></td>
+              <td>
+                <select id="edit-status-${c.id}">
+                  <option value="PENDING" ${c.status === 'PENDING' ? 'selected' : ''}>PENDING</option>
+                  <option value="VERIFIED" ${c.status === 'VERIFIED' ? 'selected' : ''}>VERIFIED</option>
+                  <option value="ASSIGNED" ${c.status === 'ASSIGNED' ? 'selected' : ''}>ASSIGNED</option>
+                  <option value="IN_PROGRESS" ${c.status === 'IN_PROGRESS' ? 'selected' : ''}>IN_PROGRESS</option>
+                  <option value="RESOLVED" ${c.status === 'RESOLVED' ? 'selected' : ''}>RESOLVED</option>
+                </select>
+              </td>
+              <td>${c.photoPath ? `<img src=\"${c.photoPath}\" alt=\"photo\">` : ''}</td>
+              <td>${c.submissionDate ? c.submissionDate.substring(0, 10) : ''}</td>
+              <td>
+                <button onclick="saveEdit(${c.id})">Save</button>
+                <button onclick="cancelEdit()">Cancel</button>
+              </td>
+              <td></td>
+            </tr>
+          `;
+        } else {
+          tbody.innerHTML += `
+            <tr>
+              <td>${c.id}</td>
+              <td>${c.complaintNumber}</td>
+              <td>${c.fullName}</td>
+              <td>${c.mobileNumber}</td>
+              <td>${c.address}</td>
+              <td>${c.issueType}</td>
+              <td>${c.description}</td>
+              <td>${c.location}</td>
+              <td>${c.status}</td>
+              <td>${c.photoPath ? `<img src=\"${c.photoPath}\" alt=\"photo\">` : ''}</td>
+              <td>${c.submissionDate ? c.submissionDate.substring(0, 10) : ''}</td>
+              <td><button onclick="editRow(${c.id})">Edit</button></td>
+              <td><button onclick="deleteComplaint(${c.id})">Delete</button></td>
+            </tr>
+          `;
+        }
+      });
+    }
+
+    function editRow(id) {
+      editingId = id;
+      fetchComplaints();
+    }
+
+    function cancelEdit() {
+      editingId = null;
+      fetchComplaints();
+    }
+
+    async function saveEdit(id) {
+      const updated = {
+        fullName: document.getElementById(`edit-name-${id}`).value,
+        mobileNumber: document.getElementById(`edit-mobile-${id}`).value,
+        address: document.getElementById(`edit-address-${id}`).value,
+        issueType: document.getElementById(`edit-issue-${id}`).value,
+        description: document.getElementById(`edit-desc-${id}`).value,
+        location: document.getElementById(`edit-location-${id}`).value,
+        status: document.getElementById(`edit-status-${id}`).value
+      };
+      const res = await fetch(`http://localhost:8080/api/complaints/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      });
+      if (res.ok) {
+        editingId = null;
+        fetchComplaints();
+        alert('Complaint updated!');
+      } else {
+        alert('Failed to update complaint');
+      }
+    }
+
+    async function deleteComplaint(id) {
+      if (!confirm('Are you sure you want to delete this complaint?')) return;
+      const res = await fetch(`http://localhost:8080/api/complaints/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        fetchComplaints();
+        alert('Complaint deleted!');
+      } else {
+        alert('Failed to delete complaint');
+      }
+    }
+
+    fetchComplaints();
+
+    fetch('http://localhost:8080/api/contact-messages')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#contactsTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(m => {
+          tbody.innerHTML += `<tr>
+            <td>${m.id}</td>
+            <td>${m.name}</td>
+            <td>${m.email}</td>
+            <td>${m.subject}</td>
+            <td>${m.message}</td>
+            <td>${m.submissionDate ? m.submissionDate.substring(0, 10) : ''}</td>
+            <td><button onclick="deleteContactMessage(${m.id})">Delete</button></td>
+          </tr>`;
+        });
+      });
+
+    async function deleteContactMessage(id) {
+      if (!confirm('Are you sure you want to delete this contact message?')) return;
+      const res = await fetch(`http://localhost:8080/api/contact-messages/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        // Refresh the table
+        fetch('http://localhost:8080/api/contact-messages')
+          .then(res => res.json())
+          .then(data => {
+            const tbody = document.querySelector('#contactsTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(m => {
+              tbody.innerHTML += `<tr>
+                <td>${m.id}</td>
+                <td>${m.name}</td>
+                <td>${m.email}</td>
+                <td>${m.subject}</td>
+                <td>${m.message}</td>
+                <td>${m.submissionDate ? m.submissionDate.substring(0, 10) : ''}</td>
+                <td><button onclick="deleteContactMessage(${m.id})">Delete</button></td>
+              </tr>`;
+            });
+          });
+        alert('Contact message deleted!');
+      } else {
+        alert('Failed to delete contact message');
+      }
+    }
+  </script>
+</body>
+</html>

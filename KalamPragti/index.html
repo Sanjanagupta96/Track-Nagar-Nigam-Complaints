@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="title">Nagar Nigam Complaint Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      background-color: #f5f9ff;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(90deg, #000fb6, #430340);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+    header h1 {
+      margin-bottom: 5px;
+    }
+    nav {
+      margin-top: 10px;
+    }
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 20px;
+      background-color: hsl(315, 55%, 4%);
+    }
+    .hero-text {
+      flex: 1;
+      max-width: 600px;
+      padding: 20px;
+      color: white;
+    }
+    .hero-text h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #3acbf4;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+    }
+    .hero-img {
+      flex: 1;
+      max-width: 500px;
+      text-align: center;
+    }
+    .hero-img img {
+      width: 100%;
+      max-width: 400px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #0077b6;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: rgb(255, 255, 255);
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+    }
+    .card h3 {
+      color: #041117;
+      margin-bottom: 10px;
+    }
+    .cta {
+      background: linear-gradient(90deg, #4d024d, #34039d);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .cta h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .cta a {
+      background: white;
+      color: #0077b6;
+      padding: 12px 30px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 30px;
+      transition: background 0.3s;
+    }
+    .cta a:hover {
+      background: #caf0f8;
+    }
+    footer {
+      background-color: #03045e;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+    @media(max-width: 768px) {
+      .hero {
+        flex-direction: column;
+      }
+      .hero-text, .hero-img {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<!-- Chatbase Chatbot Integration -->
+<script>
+  window.chatbaseConfig = {
+    chatbotId: "mtrj7s3iste0esuvd1jc3f5csnorzrmu" // 👈 VERY IMPORTANT
+  };
+</script>
+<script>
+  (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};let script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.defer=true;script.setAttribute("id","chatbase-script");document.head.appendChild(script);}})();
+</script>
+
+<body>
+
+  <header>
+    <h1 id="title">Nagar Nigam Complaint Tracker</h1>
+    <nav>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="Complain.html" id="complainLink">Register Complaint</a>
+      <a href="Trackcomplain.html" id="trackLink">Track Status</a>
+      <a href="Contact.html" id="contactLink">Contact</a>
+      <a href="Admin.html" id="AdminLink">Admin</a>
+    </nav>
+    <div class="language-switcher">
+      <button data-lang="en">English</button>
+      <button data-lang="hi">हिन्दी</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text" data-aos="fade-right">
+      <h2 id="heroTitle">Helping Citizens Track Complaints Online</h2>
+      <p id="heroDesc">
+        Say goodbye to repeated office visits! With our smart tracking system, you can register and track Nagar Nigam complaints right from your home—anytime, anywhere.
+      </p>
+    </div>
+    <div class="hero-img" data-aos="fade-left">
+      <img src="https://img.freepik.com/free-vector/customer-support-flat-illustration_23-2148889374.jpg" alt="Tracking Illustration">
+    </div>
+  </section>
+
+  <section class="section" data-aos="fade-up">
+    <h2 id="aboutTitle">About This Platform</h2>
+    <p style="text-align:center; max-width: 800px; margin: auto;" id="aboutDesc">
+      This platform empowers citizens by providing an easy-to-use complaint management system for municipal services. Our mission is to bridge the communication gap between the Nagar Nigam and the public using digital innovation.
+    </p>
+  </section>
+
+  <section class="section" data-aos="fade-up">
+    <h2 id="featuresTitle">Key Features</h2>
+    <div class="cards">
+      <div class="card">
+        <h3 id="f1">Real-Time Status</h3>
+        <p id="f1d">Track your complaint live with status updates at every stage of the resolution process.</p>
+      </div>
+      <div class="card">
+        <h3 id="f2">Photo Upload</h3>
+        <p id="f2d">Upload a photo of the issue so authorities can better understand and respond effectively.</p>
+      </div>
+      <div class="card">
+        <h3 id="f3">GPS Location</h3>
+        <p id="f3d">Auto-fetch your location so complaints can be accurately mapped to your area.</p>
+      </div>
+      <div class="card">
+        <h3 id="f4">Quick Registration</h3>
+        <p id="f4d">Register your complaint within seconds with our simplified and mobile-friendly form.</p>
+      </div>
+      <div class="card">
+        <h3 id="f5">Instant Notifications</h3>
+        <p id="f5d">Receive SMS or Email alerts when your complaint status changes.</p>
+      </div>
+      <div class="card">
+        <h3 id="f6">Admin Dashboard</h3>
+        <p id="f6d">Admin users can manage, assign, and resolve complaints through a centralized dashboard.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" data-aos="zoom-in">
+    <h2 id="ctaTitle">Start Reporting Today</h2>
+    <p id="ctaDesc">Join thousands of citizens already making a difference in their neighborhoods!</p>
+    <br>
+    <a href="Complain.html" id="ctaBtn">Register a Complaint</a>
+  </section>
+
+  <footer>
+    &copy; 2025 <span id="footerText">Nagar Nigam Complaint Tracker. All rights reserved.</span> | Developed by Tech Challengers
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000 });
+  </script>
+
+  <!-- Chatbase Chatbot Integration -->
+  <script>
+    window.chatbaseConfig = {
+      chatbotId: "mtrj7s3iste0esuvd1jc3f5csnorzrmu" // 👈 VERY IMPORTANT
+    };
+  </script>
+  <script>
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};let script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.defer=true;script.setAttribute("id","chatbase-script");document.head.appendChild(script);}})();
+  </script>
+
+  <!-- Language Translator Script -->
+  <script>
+    const translations = {
+      en: {
+        title: "Nagar Nigam Complaint Tracker",
+        homeLink: "Home",
+        complainLink: "Register Complaint",
+        trackLink: "Track Status",
+        contactLink: "Contact",
+        AdminLink:"Admin",
+        heroTitle: "Helping Citizens Track Complaints Online",
+        heroDesc: "Say goodbye to repeated office visits! With our smart tracking system, you can register and track Nagar Nigam complaints right from your home—anytime, anywhere.",
+        aboutTitle: "About This Platform",
+        aboutDesc: "This platform empowers citizens by providing an easy-to-use complaint management system for municipal services. Our mission is to bridge the communication gap between the Nagar Nigam and the public using digital innovation.",
+        featuresTitle: "Key Features",
+        f1: "Real-Time Status", f1d: "Track your complaint live with status updates at every stage of the resolution process.",
+        f2: "Photo Upload", f2d: "Upload a photo of the issue so authorities can better understand and respond effectively.",
+        f3: "GPS Location", f3d: "Auto-fetch your location so complaints can be accurately mapped to your area.",
+        f4: "Quick Registration", f4d: "Register your complaint within seconds with our simplified and mobile-friendly form.",
+        f5: "Instant Notifications", f5d: "Receive SMS or Email alerts when your complaint status changes.",
+        f6: "Admin Dashboard", f6d: "Admin users can manage, assign, and resolve complaints through a centralized dashboard.",
+        ctaTitle: "Start Reporting Today", ctaDesc: "Join thousands of citizens already making a difference in their neighborhoods!", ctaBtn: "Register a Complaint",
+        footerText: "Nagar Nigam Complaint Tracker. All rights reserved."
+      },
+      hi: {
+        title: "नगर निगम शिकायत ट्रैकर",
+        homeLink: "होम",
+        complainLink: "शिकायत दर्ज करें",
+        trackLink: "स्थिति ट्रैक करें",
+        contactLink: "संपर्क करें",
+        AdminLink: "एडमिन",
+        heroTitle: "नागरिकों को ऑनलाइन शिकायत ट्रैकिंग में सहायता",
+        heroDesc: "बार-बार ऑफिस जाने की ज़रूरत नहीं! अब घर बैठे कभी भी, कहीं से भी अपनी शिकायत दर्ज करें और उसकी स्थिति ट्रैक करें।",
+        aboutTitle: "इस प्लेटफ़ॉर्म के बारे में",
+        aboutDesc: "यह प्लेटफ़ॉर्म नागरिकों को नगरपालिका सेवाओं के लिए एक आसान शिकायत प्रबंधन प्रणाली प्रदान करता है। हमारा उद्देश्य जनता और नगर निगम के बीच की दूरी को डिजिटल नवाचार से कम करना है।",
+        featuresTitle: "मुख्य विशेषताएं",
+        f1: "रीयल-टाइम स्थिति", f1d: "शिकायत की स्थिति को हर चरण पर ट्रैक करें।",
+        f2: "फोटो अपलोड", f2d: "समस्या की तस्वीर अपलोड करें जिससे अधिकारी बेहतर समझ सकें।",
+        f3: "जीपीएस स्थान", f3d: "आपका स्थान स्वतः प्राप्त कर शिकायत को सही क्षेत्र से जोड़ें।",
+        f4: "त्वरित पंजीकरण", f4d: "मात्र सेकंडों में शिकायत दर्ज करें।",
+        f5: "तत्काल सूचना", f5d: "शिकायत की स्थिति बदलते ही सूचना प्राप्त करें।",
+        f6: "प्रशासनिक डैशबोर्ड", f6d: "प्रशासन शिकायतों को डैशबोर्ड से प्रबंधित कर सकता है।",
+        ctaTitle: "आज ही शिकायत दर्ज करें", ctaDesc: "हज़ारों नागरिक पहले ही बदलाव ला रहे हैं!", ctaBtn: "शिकायत दर्ज करें",
+        footerText: "नगर निगम शिकायत ट्रैकर. सर्वाधिकार सुरक्षित."
+      }
+    };
+
+    function setLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      const t = translations[lang];
+      if (!t) return;
+      for (const id in t) {
+        const el = document.getElementById(id);
+        if (el) el.innerText = t[id];
+      }
+    }
+
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setLanguage(btn.dataset.lang);
+      });
+    });
+
+    const defaultLang = localStorage.getItem('lang') || 'en';
+    setLanguage(defaultLang);
+  </script>
+
+</body>
+</html>

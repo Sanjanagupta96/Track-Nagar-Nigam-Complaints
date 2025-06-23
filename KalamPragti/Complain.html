@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register Complaint - Nagar Nigam Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(90deg, #080c7f, #56014a);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+    header h1 { margin-bottom: 5px; }
+    nav { margin-top: 10px; }
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .form-container {
+      max-width: 800px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .form-container h2 {
+      text-align: center;
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+    form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #333;
+    }
+    form input[type="text"],
+    form input[type="tel"],
+    form input[type="file"],
+    form select,
+    form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    form textarea { resize: vertical; }
+    form button {
+      margin-top: 25px;
+      padding: 12px 25px;
+      background-color: #0077b6;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    form button:hover { background-color: #023e8a; }
+    footer {
+      background-color: #03045e;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      margin-top: 80px;
+    }
+    @media (max-width: 600px) {
+      .form-container {
+        margin: 20px;
+        padding: 20px;
+      }
+    }
+    /* Success message styling */
+    #successMessage {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+
+  <header>
+    <h1 id="title">Nagar Nigam Complaint Tracker</h1>
+    <nav>
+      <a href="index.html" id="homeLink">Home</a>
+      <a href="Complain.html" id="complainLink">Register Complaint</a>
+      <a href="Trackcomplain.html" id="trackLink">Track Status</a>
+      <a href="Contact.html" id="contactLink">Contact</a>
+    </nav>
+    <div class="language-switcher">
+      <button data-lang="en">English</button>
+      <button data-lang="hi">हिन्दी</button>
+    </div>
+  </header>
+
+  <!-- Complaint Form -->
+   <div class="form-container" data-aos="fade-up">
+    <h2 id="reg_complains">Register Your Complaint</h2>
+    <form id="complaintForm" novalidate>
+      <label for="name" id="nameLabel">Full Name:</label>
+      <input type="text" name="name" id="name" required placeholder="" />
+
+      <label for="mobile" id="numberLabel">Mobile Number:</label>
+      <input type="tel" name="mobile" id="mobile" pattern="[0-9]{10}" required placeholder="" />
+
+      <label for="address" id="addressLabel">Address:</label>
+      <input type="text" name="address" id="address" required placeholder="" />
+
+      <label for="issue" id="issueLabel">Issue Type:</label>
+      <select name="issue" id="issue" required>
+        <option value="" id="selectOption">Select</option>
+        <option value="garbage" id="gar_collect">Garbage Collection</option>
+        <option value="sewage" id="problem">Sewage Problem</option>
+        <option value="streetlight" id="street_prob">Street Light Not Working</option>
+        <option value="road" id="road_prob">Road Damage</option>
+        <option value="water" id="water_prob">Water Supply Issue</option>
+      </select>
+
+      <label for="description" id="descriptionLabel">Description:</label>
+      <textarea name="description" id="description" rows="4" required placeholder=""></textarea>
+
+      <label for="photo" id="uploadLabel">Upload Photo (optional):</label>
+      <input type="file" name="photo" id="photo" accept="image/*" />
+
+      <input type="text" name="location" id="location" placeholder="e.g., 28.6139, 77.2090" readonly style="margin-top:10px;" />
+      <button type="button" class="geo-btn" id="getLocationBtn">Get My Location</button>
+      <p class="showD" id="showD">User Location details</p>
+
+      <button type="submit" id="submitBtn">Submit Complaint</button>
+    </form>
+
+    <div id="successMessage"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <span id="foo">&copy; 2025 Nagar Nigam Complaint Tracker. All rights reserved. | Developed by Tech Challengers</span>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000 });
+
+    function generateComplaintNumber() {
+        return Math.floor(100000 + Math.random() * 900000);
+    }
+
+    const showD = document.querySelector(".showD");
+    const locationInput = document.getElementById("location");
+
+    document.querySelector(".geo-btn").addEventListener("click", () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            locationInput.value = `${latitude}, ${longitude}`;
+            showD.textContent = `Latitude: ${latitude} & Longitude: ${longitude}`;
+          },
+          (error) => {
+            showD.textContent = error.message;
+            console.log(error.message);
+          }
+        );
+      } else {
+        showD.textContent = "Geolocation is not supported by this browser.";
+      }
+    });
+
+    document.getElementById('complaintForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        const form = event.target;
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const location = form.location.value.trim();
+        if (location !== '') {
+            const coordsPattern = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
+            if (!coordsPattern.test(location)) {
+                alert('Please enter coordinates in correct format: "latitude, longitude" (e.g., 28.6139, 77.2090)');
+                form.location.focus();
+                return;
+            }
+        }
+
+        // Create complaint data object
+        const complaintData = {
+            fullName: form.name.value,
+            mobileNumber: form.mobile.value,
+            address: form.address.value,
+            issueType: form.issue.value,
+            description: form.description.value,
+            location: form.location.value || null
+        };
+
+        try {
+            // Send data to backend
+            const response = await fetch('http://localhost:8080/api/complaints', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(complaintData)
+            });
+
+            if (response.ok) {
+                const savedComplaint = await response.json();
+                
+                // Show success message
+                const successDiv = document.getElementById('successMessage');
+                successDiv.style.display = 'block';
+                successDiv.innerHTML = `
+                    ✅ Your complaint has been successfully registered.<br />
+                    Your Complaint Number is: <strong>${savedComplaint.complaintNumber}</strong><br />
+                    Please save this number for future reference.
+                `;
+
+                form.reset();
+                successDiv.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                throw new Error('Failed to submit complaint');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to submit complaint. Please try again.');
+        }
+    });
+  </script>
+  <script>
+    const translations = {
+      en: {
+        title: "Nagar Nigam Complaint Tracker",
+        homeLink: "Home",
+        complainLink: "Register Complaint",
+        trackLink: "Track Status",
+        contactLink: "Contact",
+        reg_complains: "Register Your Complaint",
+        nameLabel: "Full Name:",
+        numberLabel: "Mobile Number:",
+        addressLabel: "Address:",
+        issueLabel: "Issue Type:",
+        selectOption: "Select",
+        gar_collect: "Garbage Collection",
+        problem: "Sewage Problem",
+        street_prob: "Street Light Not Working",
+        road_prob: "Road Damage",
+        water_prob: "Water Supply Issue",
+        descriptionLabel: "Description:",
+        uploadLabel: "Upload Photo (optional):",
+        getLocationBtn: "Get My Location",
+        showD: "User Location details",
+        submitBtn: "Submit Complaint",
+        foo: "©2025 Nagar Nigam Complaint Tracker. All rights reserved. | Developed by Tech Challengers"
+      },
+      hi: {
+        title: "नगर निगम शिकायत ट्रैकर",
+        homeLink: "होम",
+        complainLink: "शिकायत दर्ज करें",
+        trackLink: "स्थिति ट्रैक करें",
+        contactLink: "संपर्क करें",
+        reg_complains: "अपनी शिकायत दर्ज करें",
+        nameLabel: "पूरा नाम:",
+        numberLabel: "मोबाइल नंबर:",
+        addressLabel: "पता:",
+        issueLabel: "समस्या का प्रकार:",
+        selectOption: "चुनें",
+        gar_collect: "कचरा संग्रहण",
+        problem: "सीवेज समस्या",
+        street_prob: "स्ट्रीट लाइट काम नहीं कर रही",
+        road_prob: "सड़क की क्षति",
+        water_prob: "जल आपूर्ति समस्या",
+        descriptionLabel: "विवरण:",
+        uploadLabel: "फ़ोटो अपलोड करें (वैकल्पिक):",
+        getLocationBtn: "मेरा स्थान प्राप्त करें",
+        showD: "उपयोगकर्ता स्थान विवरण",
+        submitBtn: "शिकायत सबमिट करें",
+        foo: "©2025 नगर निगम शिकायत ट्रैकर। सर्वाधिकार सुरक्षित। | विकसित किया गया टेक चैलेंजर्स द्वारा।"
+      }
+    };
+
+    function setLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      const t = translations[lang];
+      if (!t) return;
+      for (const id in t) {
+        const el = document.getElementById(id);
+        if (el) {
+          if (el.tagName === 'OPTION') {
+            el.text = t[id];
+          } else if (el.tagName === 'INPUT' && el.type === 'text' && id === 'location') {
+            el.placeholder = lang === 'hi' ? 'उदा., 28.6139, 77.2090' : 'e.g., 28.6139, 77.2090';
+          } else if (el.tagName === 'TEXTAREA') {
+            el.placeholder = lang === 'hi' ? '' : '';
+          } else {
+            el.innerText = t[id];
+          }
+        }
+      }
+    }
+
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setLanguage(btn.dataset.lang);
+      });
+    });
+
+    const defaultLang = localStorage.getItem('lang') || 'en';
+    setLanguage(defaultLang);
+  </script>
+
+</body>
+</html> 
+
+
+
